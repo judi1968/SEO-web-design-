@@ -18,20 +18,11 @@ import pja.databases.generalisation.DB;
 public class NewsController {
 
     @GetMapping("/news")
-    public String listOrDeleteNews(@RequestParam(required = false) Integer id, Model model) throws Exception{
-        if (id != null) {
-            
-        }else{
-
-        }
-        Connection connection = MyConnection.connect();
-        if (connection!=null) {
-            System.out.println("ok");
-            connection.close();
-        }else{
-            System.out.println("not ok");
-        } 
-        List<News> news = News.getSampleNews();
+    public String list(Model model) throws Exception{
+        Connection connection = null;
+        connection = MyConnection.connect();
+        List<News> news = (List<News>) DB.getAll(new News(), connection);
+        connection.close();
         String newsList = (String) DB.getTableau(news, new News(), "Liste des nouvelles", "");
         model.addAttribute("newsList", newsList);
         return "back-office/news-list";

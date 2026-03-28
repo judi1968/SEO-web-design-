@@ -2,43 +2,117 @@ package com.project.model.table;
 
 import java.util.Date;
 import java.util.List;
-import java.util.ArrayList;
 
 import com.project.model.pja.databases.generalisation.annotation.ShowTable;
+import com.project.model.pja.databases.generalisation.annotation.AttributDb;
+import com.project.model.pja.databases.generalisation.annotation.IdDb;
+import com.project.model.pja.databases.generalisation.annotation.TableDb;
+import com.project.utils.HtmlUtils;
 
+@com.project.model.pja.databases.generalisation.annotation.TableDb(name = "news")
 public class News {
-    Integer id;
-    String title;
-    Date dateSortie;
     
+    @IdDb
+    @AttributDb(name = "id")
+    private Integer id;
+    
+    @AttributDb(name = "contenu")
+    private String contenu;
+    
+    @AttributDb(name = "date_publication")
+    private Date datePublication;
+    
+    @AttributDb(name = "images_couverture")
+    private String imagesCouverture;
+    
+    @AttributDb(name = "alt_images_couverture")
+    private String altImagesCouverture;
+    
+    // Relation avec les images (non mappée directement dans la base)
+    private List<ImagesNews> images;
+    
+    // Constructeurs
+    public News() {
+    }
+    
+    public News(Integer id, String contenu, Date datePublication, 
+                String imagesCouverture, String altImagesCouverture) {
+        this.id = id;
+        this.contenu = contenu;
+        this.datePublication = datePublication;
+        this.imagesCouverture = imagesCouverture;
+        this.altImagesCouverture = altImagesCouverture;
+    }
+    
+    // Getters et Setters
     public Integer getId() {
         return id;
     }
+    
     public void setId(Integer id) {
         this.id = id;
     }
-    public String getTitle() {
-        return title;
-    }
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    public Date getDateSortie() {
-        return dateSortie;
-    }
-    public void setDateSortie(Date dateSortie) {
-        this.dateSortie = dateSortie;
+    
+    public String getContenu() {
+        return contenu;
     }
     
+    public void setContenu(String contenu) {
+        this.contenu = contenu;
+    }
+    
+    public Date getDatePublication() {
+        return datePublication;
+    }
+    
+    public void setDatePublication(Date datePublication) {
+        this.datePublication = datePublication;
+    }
+    
+    public String getImagesCouverture() {
+        return imagesCouverture;
+    }
+    
+    public void setImagesCouverture(String imagesCouverture) {
+        this.imagesCouverture = imagesCouverture;
+    }
+    
+    public String getAltImagesCouverture() {
+        return altImagesCouverture;
+    }
+    
+    public void setAltImagesCouverture(String altImagesCouverture) {
+        this.altImagesCouverture = altImagesCouverture;
+    }
+    
+    public List<ImagesNews> getImages() {
+        return images;
+    }
+    
+    public void setImages(List<ImagesNews> images) {
+        this.images = images;
+    }
+    
+    @Override
+    public String toString() {
+        return "News{" +
+                "id=" + id +
+                ", contenu='" + contenu + '\'' +
+                ", datePublication=" + datePublication +
+                ", imagesCouverture='" + imagesCouverture + '\'' +
+                ", altImagesCouverture='" + altImagesCouverture + '\'' +
+                '}';
+    }
+
     @ShowTable(name = "Titre", numero = 1)
     public String getTitleInfo() {
-        return title;
+        return HtmlUtils.extractH1Content(contenu);
     }
 
     @ShowTable(name = "Date Sortie", numero = 2)
     public String getDateInfo(){ 
         java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("d MMM yyyy");
-        return formatter.format(dateSortie);
+        return formatter.format(datePublication);
     }
 
     @ShowTable(name = "Action", numero = 3)
@@ -54,20 +128,5 @@ public class News {
                         "</div>" + //
                         "</div>" + //
                         "</td>";
-    }
-
-    public static List<News> getSampleNews() {
-        List<News> newsList = new ArrayList<>();
-        News news1 = new News();
-        news1.setTitle("New Product Launch");
-        news1.setDateSortie(new Date());
-        newsList.add(news1);
-
-        News news2 = new News();
-        news2.setTitle("Company Milestone Achieved");
-        news2.setDateSortie(new Date());
-        newsList.add(news2);
-
-        return newsList;
     }
 }
