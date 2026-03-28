@@ -12,6 +12,6 @@ public class RooterController {
 
     @GetMapping("/back-office")
     public String backoffice() {
-        return "redirect:/news";
+        return "redirect:/news"; 
     }
 }

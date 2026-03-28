@@ -1,6 +1,6 @@
 package com.project.model.table;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import com.project.model.pja.databases.generalisation.annotation.ShowTable;
