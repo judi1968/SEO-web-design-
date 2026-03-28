@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: myapp_db
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    ports:
+      - "6060:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  app:
+    image: eclipse-temurin:17-jdk-alpine
+    container_name: java_app
+    working_dir: /app
+    volumes:
+      - ./:/app
+    ports:
+      - "5050:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - app_network
+    command: ["./mvnw", "spring-boot:run"]
+    # Si vous utilisez un JAR déjà compilé, remplacez la ligne command par:
+    # command: ["java", "-jar", "votre-app.jar"]
+
+volumes:
+  mysql_data:
+
+networks:
+  app_network:
+    driver: bridge
