@@ -7,6 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class RooterController {
     @GetMapping("/")
     public String home() {
-        return "home"; // correspond à home.jsp
+        return "home"; 
+    }
+
+    @GetMapping("/back-office")
+    public String backoffice() {
+        return "redirect:/news";
     }
 }
